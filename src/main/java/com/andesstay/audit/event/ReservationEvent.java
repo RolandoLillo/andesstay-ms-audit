@@ -1,6 +1,7 @@
 package com.andesstay.audit.event;
 
 import java.time.Instant;
+import java.util.Map;
 
 public record ReservationEvent(
 		String eventId,
@@ -9,9 +10,6 @@ public record ReservationEvent(
 		String action,
 		String resourceType,
 		Long resourceId,
-		String previousStatus,
-		String newStatus,
-		String unitName,
-		Integer guests
+		Map<String, Object> detail
 ) {
 }
