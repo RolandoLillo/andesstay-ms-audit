@@ -3,7 +3,6 @@ package com.andesstay.audit.controller;
 import com.andesstay.audit.dto.MetricsResponse;
 import com.andesstay.audit.dto.TimelineResponse;
 import com.andesstay.audit.service.AuditService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +15,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/audit")
-@RequiredArgsConstructor
 public class AuditController {
 
 	private final AuditService auditService;
+
+	public AuditController(AuditService auditService) {
+		this.auditService = auditService;
+	}
 
 	@GetMapping("/health")
 	public ResponseEntity<Map<String, String>> health() {
