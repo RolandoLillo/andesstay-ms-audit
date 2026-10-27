@@ -38,24 +38,44 @@ public class ReservationEventListener {
 
 	private String buildDetail(ReservationEvent event) {
 		StringBuilder detail = new StringBuilder();
-		if (event.previousStatus() != null && event.newStatus() != null) {
-			detail.append(event.previousStatus()).append(" -> ").append(event.newStatus());
-		} else if (event.newStatus() != null) {
-			detail.append("newStatus=").append(event.newStatus());
+		java.util.Map<String, Object> eventDetail = event.detail();
+		String previousStatus = null;
+		String newStatus = null;
+		String unitName = null;
+		Object guests = null;
+		if (eventDetail != null) {
+			Object prev = eventDetail.get("previousStatus");
+			if (prev != null) {
+				previousStatus = String.valueOf(prev);
+			}
+			Object neu = eventDetail.get("newStatus");
+			if (neu != null) {
+				newStatus = String.valueOf(neu);
+			}
+			Object unit = eventDetail.get("unitName");
+			if (unit != null) {
+				unitName = String.valueOf(unit);
+			}
+			guests = eventDetail.get("guests");
+		}
+		if (previousStatus != null && !previousStatus.isBlank() && newStatus != null && !newStatus.isBlank()) {
+			detail.append(previousStatus).append(" -> ").append(newStatus);
+		} else if (newStatus != null && !newStatus.isBlank()) {
+			detail.append("newStatus=").append(newStatus);
 		} else {
 			detail.append("action=").append(event.action());
 		}
-		if (event.unitName() != null && !event.unitName().isBlank()) {
+		if (unitName != null && !unitName.isBlank()) {
 			if (detail.length() > 0) {
 				detail.append("; ");
 			}
-			detail.append("unitName=").append(event.unitName());
+			detail.append("unitName=").append(unitName);
 		}
-		if (event.guests() != null) {
+		if (guests != null) {
 			if (detail.length() > 0) {
 				detail.append("; ");
 			}
-			detail.append("guests=").append(event.guests());
+			detail.append("guests=").append(guests);
 		}
 		return detail.toString();
 	}
